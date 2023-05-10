@@ -2,8 +2,10 @@ package dev.ivrogo.todolist.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -21,15 +23,14 @@ public class User {
     @NonNull
     @Column(unique = true)
     private String username;
-
     @NonNull
     private String password;
 
     @Singular
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "users_authorities", joinColumns = {
-            @JoinColumn (name = "USERS_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
-            @JoinColumn(name = "AUTHORITIES_ID", referencedColumnName = "ID")})
+            @JoinColumn(name = "USERS_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+            @JoinColumn(name = "AUTHORITIES_ID", referencedColumnName = "ID") })
     private List<Authority> authorities;
 
     @Builder.Default
@@ -43,7 +44,6 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String email;
-    private LocalDate birthDate;
-
+    private String emailAddress;
+    private LocalDate birthdate;
 }
