@@ -5,6 +5,7 @@ import dev.ivrogo.todolist.dto.UserDto;
 import dev.ivrogo.todolist.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,58 +18,27 @@ public class HomeControllerImpl implements HomeController{
     private UserService userService;
     @Override
     @GetMapping("/")
-    public String home() {
-        return """
-                <h1>Welcome home</h1>
-                <a href="/user"</a><br/>
-                <a href="/admin"</a><br/>
-                <a href="/developer"</a>
-                """;
+    public String home(Model model, Authentication authentication) {
+        if (authentication != null) {
+            UserDto user = userService.getLoginUser();
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("title", "Home");
+        return "index";
     }
 
     @Override
-    @GetMapping("/user")
-    public String user(Authentication authentication) {
-        UserDto userDto = userService.getLoginUser();
-        return """
-                <h1>Welcome User!</h1>
-                <h2>%s</h2>
-                <h3>%s</h3>
-                """.formatted(authentication.getName(), userDto);
+    public String login(Model model) {
+        model.addAttribute("title", "Login");
+        return "login";
     }
 
     @Override
-    @GetMapping("/admin")
-    public String admin(Authentication authentication) {
-        MySecurityUser mySecurityUser = (MySecurityUser) authentication.getPrincipal();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return """
-                <h1>Welcome Admin!</h1>
-                <h2>%s</h2>
-                <p>MyUser:<br/>
-                User name: %s<br/>
-                Full name: %s<br/>
-                E-Mail: %s<br/>
-                Birthday: %s<br/>
-                Authorities: %s
-                </p>
-                """.formatted(authentication.getName(),
-                mySecurityUser.getUsername(),
-                mySecurityUser.getFullname(),
-                mySecurityUser.getEmailaddress(),
-                mySecurityUser.getBirthdate().format(dateTimeFormatter),
-                mySecurityUser.getAuthorities()
-        );
+    public String loginError(Model model) {
+        model.addAttribute("title", "Login");
+        model.addAttribute("loginError", true);
+        return "login";
     }
 
-    @Override
-    @GetMapping("/developer")
-    public String developer(Authentication authentication) {
-        UserDto userDto = userService.getLoginUser();
-        return """
-                <h1>Welcome Developer!</h1>
-                <h2>%s</h2>
-                <h3>%s</h3>
-                """.formatted(authentication.getName(), userDto);
-    }
+
 }

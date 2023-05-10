@@ -1,14 +1,13 @@
 package dev.ivrogo.todolist.Controller;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 
 public interface HomeController {
 
-    String home();
+    String home(Model model, Authentication authentication);
 
-    String user(Authentication authentication);
+    String login(Model model);
 
-    String admin(Authentication authentication);
-
-    String developer(Authentication authentication);
+    String loginError(Model model);
 }
