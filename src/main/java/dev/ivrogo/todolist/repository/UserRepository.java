@@ -10,12 +10,15 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"authorities"})
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {"authorities"})
     Optional<User> findByUsername(String username);
 
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"authorities"})
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {"authorities"})
     List<User> findAll();
 
     @Query("SELECT u FROM User u WHERE u.username = ?#{ principal.username}")
     Optional<User> findLoginUser();
+
 }

@@ -1,6 +1,6 @@
 package dev.ivrogo.todolist.config;
 
-import dev.ivrogo.todolist.model.User;
+import org.springframework.security.core.userdetails.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +11,6 @@ import java.util.Collection;
 @Getter
 @Setter
 public class MySecurityUser extends User {
-
 
     private static final long serialVersionUID = 1L;
 
@@ -38,4 +37,6 @@ public class MySecurityUser extends User {
         return "MySecurityUser firstName=" + firstName + ", lastName=" + lastName + ", name=" + fullname + ", emailaddress=" + emailaddress + ", birthdate=" + birthdate
                 + "] " + super.toString();
     }
+
+
 }
